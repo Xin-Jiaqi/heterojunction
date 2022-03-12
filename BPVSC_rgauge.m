@@ -21,14 +21,14 @@ Vlatt = det(alatt) * 1e-30;
 %% Initial
 nkx = 70;
 nky = 70;
-nkz = 1;
+nkz = 1; % 二维材料，z方向为0
 ksi = 0.02; % dissipation term, hbar/tau, in eV;
-hv = linspace(1.0, 3.0, 100); % BPV frequency;
-nocc = 94;%number of occupied band
-a = 2;
-b = 2;
-c = 2; % dion, sigma^a_bc
-thickness = 8.7460; % in Angstrom%%%%%%%
+hv = linspace(0.0, 8.0, 100); % BPV frequency;
+nocc = 6; % 费米能级以下、Good-gap以上的能带数
+a = 1; % 二维材料中，a一般取面内两个方向x、y
+b = 1; 
+c = 1; % b、c代表光场分量，可取1、2、3
+thickness = 2.5890; % in Angstrom 材料的厚度
 
 %% Main
 kx = linspace(-0.5, 0.5, nkx+1);
@@ -100,7 +100,7 @@ bpv = bpv * 1e-30;
 bpv = bpv / ev2omega;
 
 % a length_z factor for 2D
-bpv = bpv * alatt(3,3) / thickness;%%%%%%
+bpv = bpv * alatt(3,3) / thickness;%注意 3D 材料可删
 
 % from A/V^2 to mu/V^2
 bpv = -bpv * 1e6 * 2;
