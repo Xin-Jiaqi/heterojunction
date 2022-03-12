@@ -4,13 +4,16 @@ import pandas as pd
 from pandas import DataFrame
 
 #   准备 good_gap 以及 fermi 数据
-#   准备能带文件 Band.dat，放在与代码同一文件夹下
-#   运行文件，给出总能带数、good_gap以下能带数；价带数、导带数以及二者对应的能量极值
+#   准备能带文件名称为 Band.dat (或改代码中文件名)，放在与代码同一文件夹下
+#   运行文件，给出总能带数、good_gap以下能带数、坐标轴取值范围、价带数导带数以及二者对应的能量极值
+#   分析结果将显示在 pycharm 运行结果中，并保存为 information.txt 文件
 #   辛嘉琪 2022.3.12
 
-good_gap = -7.15  # 依据能带图修改
-fermi = -2.75  # 依据fermi能级修改
+#########################################################
+good_gap = 999  # 依据能带图修改，如果没有good_gap，就填 999
+fermi = -1.2017  # 依据fermi能级修改
 
+#########################################################
 data_kpath=[]
 data_energy=[]
 
@@ -28,13 +31,15 @@ with open('./Band.dat') as banddata:
         # 行、列值读入Python内
 nrows = int(x/2)
 
+info = []
+
 # 给出能带数以及每条能带取点个数
 bands_number = 0  # 能带数
 for i in range(nrows):
     if data_kpath[i] == 0.0:
         bands_number = bands_number + 1
 m = int(nrows/bands_number)  # 每组的离散数据个数
-print("总能带数NBANDS：",bands_number)
+info.append("总能带数NBANDS："+str(bands_number))
 
 # 分组并记录数据
 x = [[ 0 for col in range(m) ] for row in range(bands_number) ]
@@ -47,19 +52,36 @@ for i in range(bands_number):
         x[i][j] = data_kpath[k]
         y[i][j] = data_energy[k]
         k = k + 1
+
 #########################################################
-
-for i in range(bands_number):
-    if max(y[i]) > good_gap:
-        break # 注意break语句，输出时的值为刚好不符合条件的值
-under_good_gap = i
-print("在good gap以下能带数：", under_good_gap)
-
+if good_gap != 999:
+    for i in range(bands_number):
+        if max(y[i]) > good_gap:
+            break # 注意break语句，输出时的值为刚好不符合条件的值
+    under_good_gap = i
+    info.append("在good gap以下能带数："+str(under_good_gap))
+else:
+    info.append('不存在\"good gap\"')
+#########################################################
 for i in range(bands_number):
     if max(y[i]) > fermi:
         break
 under_fermi = i
-print("价带数：", under_fermi)
-print("导带数：", bands_number - under_fermi)
-print("价带能量最高值:", max(y[under_fermi-1]), "eV")
-print("导带能量最低值:", min(y[under_fermi]), "eV")
+#########################################################
+info.append("能带最低值："+str(min(y[0]))+" eV")
+info.append("能带最高值："+str(max(y[bands_number-1]))+" eV")
+info.append("横坐标(kpath)取值范围：0 ~ "+str(max(x[0])))
+#########################################################
+
+info.append("价带数："+str(under_fermi))
+info.append("导带数："+str(bands_number - under_fermi))
+info.append("价带能量最高值："+str(max(y[under_fermi-1]))+" eV")
+info.append("导带能量最低值："+str(min(y[under_fermi]))+" eV")
+
+for i in info:
+    print(i)  #  输出结果
+
+#########################################################
+with open("information.txt", "w") as information:
+    for i in info:
+        information.write(i+'\n')
