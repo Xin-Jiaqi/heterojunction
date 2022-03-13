@@ -11,7 +11,7 @@ from pandas import DataFrame
 #   修改自动识别费米能级 2022.3.13
 #########################################################
 
-good_gap = -999  # 依据能带图修改，如果没有good_gap，就填 -999
+good_gap = -13.21192  # 依据能带图修改，如果没有good_gap，就填 -999
 
 #########################################################
 data_kpath=[]
@@ -59,7 +59,7 @@ if good_gap != -999:
         if max(y[i]) > good_gap:
             break # 注意break语句，输出时的值为刚好不符合条件的值
     under_good_gap = i
-    info.append("在good gap以下能带数："+str(under_good_gap))
+    info.append("在good gap（"+str(good_gap)+" eV）以下能带数："+str(under_good_gap))
 else:
     info.append('不存在\"good gap\"')
 #########################################################
