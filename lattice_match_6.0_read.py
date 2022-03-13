@@ -4,7 +4,6 @@ from numpy import *
 import sys
 import os
 
-
 countPOSCAR_1 = len(open(r"POSCAR-1",'rU').readlines())
 fcell1 = open("POSCAR-1","r")
 line = fcell1.readline().split()
@@ -347,7 +346,7 @@ m3 = int(line[5])
 filetest.close()
 #print n1, m1, n2, m2, n3, m3
 ####lattice
-fatom = open("poscar-1","w")
+fatom = open("poscar_1","w")
 x_u = u
 y_u = 0
 z_u = 0
@@ -595,7 +594,7 @@ m3 = int(line[5])
 filetest.close()
 #print n1, m1, n2, m2
 ####lattice
-fatom = open("poscar-2","w")
+fatom = open("poscar_2","w")
 x_u = u
 y_u = 0
 z_u = 0
