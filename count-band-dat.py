@@ -3,15 +3,15 @@ import math
 import pandas as pd
 from pandas import DataFrame
 
-#   准备 good_gap 以及 fermi 数据
+#   准备 good_gap,如果没有，请填 -999
 #   准备能带文件名称为 Band.dat (或改代码中文件名)，放在与代码同一文件夹下
-#   运行文件，给出总能带数、good_gap以下能带数、坐标轴取值范围、价带数导带数以及二者对应的能量极值
+#   运行文件，给出总能带数、good_gap以下能带数（或不存在good gao）、费米能级、坐标轴取值范围、价带数导带数以及二者对应的能量极值
 #   分析结果将显示在 pycharm 运行结果中，并保存为 information.txt 文件
 #   辛嘉琪 2022.3.12
-
+#   修改自动识别费米能级 2022.3.13
 #########################################################
-good_gap = 999  # 依据能带图修改，如果没有good_gap，就填 999
-fermi = -1.2017  # 依据fermi能级修改
+
+good_gap = -999  # 依据能带图修改，如果没有good_gap，就填 -999
 
 #########################################################
 data_kpath=[]
@@ -54,7 +54,7 @@ for i in range(bands_number):
         k = k + 1
 
 #########################################################
-if good_gap != 999:
+if good_gap != -999:
     for i in range(bands_number):
         if max(y[i]) > good_gap:
             break # 注意break语句，输出时的值为刚好不符合条件的值
@@ -63,6 +63,11 @@ if good_gap != 999:
 else:
     info.append('不存在\"good gap\"')
 #########################################################
+for i in range(bands_number-1):
+    if min(y[i]) > good_gap and min(y[i+1]) - max(y[i]) > 0:
+        fermi = max(y[i])
+        info.append("费米能级为："+str(fermi)+" eV")
+        break
 for i in range(bands_number):
     if max(y[i]) > fermi:
         break
