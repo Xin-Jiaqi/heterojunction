@@ -5,7 +5,8 @@ from pandas import DataFrame
 
 #   准备 good_gap,如果没有，请填 -999
 #   准备能带文件名称为 Band.dat (或改代码中文件名)，放在与代码同一文件夹下
-#   运行文件，给出总能带数、good_gap以下能带数（或不存在good gao）、费米能级、坐标轴取值范围、价带数导带数以及二者对应的能量极值
+#   运行文件，程序会给出总能带数、good_gap以下能带数（或不存在good gao）、坐标轴取值范围
+#   若存在费米能级，程序将给出价带数导带数以及二者对应的能量极值；反之程序将报告“不存在费米能级”。
 #   分析结果将显示在 pycharm 运行结果中，并保存为 information.txt 文件
 #   辛嘉琪 2022.3.12
 #   修改自动识别费米能级 2022.3.13
@@ -52,7 +53,10 @@ for i in range(bands_number):
         x[i][j] = data_kpath[k]
         y[i][j] = data_energy[k]
         k = k + 1
-
+#########################################################
+info.append("能带最低值："+str(min(y[0]))+" eV")
+info.append("能带最高值："+str(max(y[bands_number-1]))+" eV")
+info.append("横坐标(kpath)取值范围：0 ~ "+str(max(x[0])))
 #########################################################
 if good_gap != -999:
     for i in range(bands_number):
@@ -63,25 +67,25 @@ if good_gap != -999:
 else:
     info.append('不存在\"good gap\"')
 #########################################################
+fermi = -999
 for i in range(bands_number-1):
     if min(y[i]) > good_gap and min(y[i+1]) - max(y[i]) > 0:
         fermi = max(y[i])
         info.append("费米能级为："+str(fermi)+" eV")
         break
-for i in range(bands_number):
-    if max(y[i]) > fermi:
-        break
-under_fermi = i
+if fermi == -999:
+    info.append("没有找到费米能级！")
+else:
+    for i in range(bands_number):
+        if max(y[i]) > fermi:
+            break
+    under_fermi = i
 #########################################################
-info.append("能带最低值："+str(min(y[0]))+" eV")
-info.append("能带最高值："+str(max(y[bands_number-1]))+" eV")
-info.append("横坐标(kpath)取值范围：0 ~ "+str(max(x[0])))
-#########################################################
-
-info.append("价带数："+str(under_fermi))
-info.append("导带数："+str(bands_number - under_fermi))
-info.append("价带能量最高值："+str(max(y[under_fermi-1]))+" eV")
-info.append("导带能量最低值："+str(min(y[under_fermi]))+" eV")
+if fermi != -999:
+    info.append("价带数："+str(under_fermi))
+    info.append("导带数："+str(bands_number - under_fermi))
+    info.append("价带能量最高值："+str(max(y[under_fermi-1]))+" eV")
+    info.append("导带能量最低值："+str(min(y[under_fermi]))+" eV")
 
 for i in info:
     print(i)  #  输出结果
