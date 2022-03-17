@@ -60,35 +60,27 @@ mkdir 2-step，并将1中所有内容拷贝在2中，即执行mv 1-step/* 2-step
 
 粘贴：
 
-**search_shells = 60**
+search_shells = 60
+num_bands =  48
+num_wann = 44
+write_xyz = true
+exclude_bands = 1-8, 57-128
 
-**num_bands =  48**
-
-**num_wann = 44**
-
-**write_xyz = true**
-
-**exclude_bands = 1-8, 57-128**
-
-**** 
-
-**begin projections**
-
-**Rh:d**
-
-**P:p**
-
-**Se:p**
-
-**end projections**
+begin projections
+Rh:d
+P:p
+Se:p;dx2-y2
+end projections
 
 注意这只是一个示例，请根据GeS进行具体更改。其中 num_bands 应大于等于 num_wann。
+
+search_shells不需要动。
 
 num_wann数值计算：例如POSCAR内显示有2个Ge原子，2个S原子，你要投影这四个原子的 p 轨道。我们知道 p 轨道内有3个电子，因此 num_wann = （2+2）*3=12
 
 num_bands 可以也取 12；
 
-exclude_bands排除了离费米能级太远的轨道，在本例中应取为1-x , (x+13)-36，请根据网站[High-quality Wannier functions – WannierTools](https://www.wanniertools.org/tutorials/high-quality-wfs/)及fatband确定 x ；36为 nbands，及全部能带数。
+exclude_bands排除了离费米能级太远的轨道，在本例中应取为1-x , (x+13)-36，请根据网站[High-quality Wannier functions – WannierTools](https://www.wanniertools.org/tutorials/high-quality-wfs/)及fatband确定 x ；36为 nbands，即全部能带数。
 
 begin projections 到 end projections 之间填写每种原子投影的轨道。
 
@@ -96,15 +88,11 @@ begin projections 到 end projections 之间填写每种原子投影的轨道。
 
 把2中所有文件copy过来，再次修改wannier90.win，加上两个窗口的参数，依据：两个rules，Fatband。
 
-**num_iter = 100**
-
-**dis_win_min  = -10**
-
-**dis_win_max  = 2.158**
-
-**dis_froz_min = -10**
-
-**dis_froz_max = 0.898**
+num_iter = 100
+dis_win_min  = -4.11282
+dis_win_max  = -1.18789
+dis_froz_min = -3.38303
+dis_froz_max = -1.05154
 
 注意这只是个示例，数值请在origin中读取。
 
@@ -114,27 +102,19 @@ begin projections 到 end projections 之间填写每种原子投影的轨道。
 
 把3中所有文件copy过来，还是修改wannier90.win，加上计算能带的参数
 
-**restart = plot**
+restart = plot
+bands_plot = true
+write_hr = true
 
-**bands_plot = true**
+begin kpoint_path
+G 0.0 0.0 0.0 X 0.5 0.0 0.0
+X 0.5 0.0 0.0 M 0.5 0.5 0.0
+M 0.5 0.5 0.0 Y 0.0 0.5 0.0
+Y 0.0 0.5 0.0 G 0.0 0.0 0.0
+G 0.0 0.0 0.0 M 0.5 0.5 0.0
+end kpoint_path
 
-**write_hr = true**
-
-**begin kpoint_path**
-
-**G 0.0 0.0 0.0 X 0.5 0.0 0.0**
-
-**X 0.5 0.0 0.0 M 0.5 0.5 0.0**
-
-**M 0.5 0.5 0.0 Y 0.0 0.5 0.0**
-
-**Y 0.0 0.5 0.0 G 0.0 0.0 0.0**
-
-**G 0.0 0.0 0.0 M 0.5 0.5 0.0**
-
-**end kpoint_path**
-
-**bands_num_points 101**
+bands_num_points 101
 
 这一步只需要更改 begin kpoint_path 到 end kpoint_path 之间的内容即可。根据 band 文件夹内 KPOINTS 进行修改。
 
