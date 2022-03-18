@@ -61,15 +61,15 @@ mkdir 2-step，并将1中所有内容拷贝在2中，即执行mv 1-step/* 2-step
 粘贴：
 
 search_shells = 60
-num_bands =  48
-num_wann = 44
-write_xyz = true
-exclude_bands = 1-8, 57-128
+num_bands =  20
+num_wann = 20
+write_xyz = true	
+exclude_bands = 1-16
 
 begin projections
-Rh:d
-P:p
-Se:p;dx2-y2
+I:dxy;dxz;dyz;px;py;pz
+Cu:dxy;dyz
+Se:py;pz
 end projections
 
 注意这只是一个示例，请根据GeS进行具体更改。其中 num_bands 应大于等于 num_wann。
@@ -89,10 +89,10 @@ begin projections 到 end projections 之间填写每种原子投影的轨道。
 把2中所有文件copy过来，再次修改wannier90.win，加上两个窗口的参数，依据：两个rules，Fatband。
 
 num_iter = 100
-dis_win_min  = -4.11282
-dis_win_max  = -1.18789
-dis_froz_min = -3.38303
-dis_froz_max = -1.05154
+dis_win_min  = -5.00712
+dis_win_max  = 0.13331
+dis_froz_min = -2.98869
+dis_froz_max = 0.98253
 
 注意这只是个示例，数值请在origin中读取。
 
@@ -108,10 +108,9 @@ write_hr = true
 
 begin kpoint_path
 G 0.0 0.0 0.0 X 0.5 0.0 0.0
-X 0.5 0.0 0.0 M 0.5 0.5 0.0
-M 0.5 0.5 0.0 Y 0.0 0.5 0.0
+X 0.5 0.0 0.0 S 0.5 0.5 0.0
+S 0.5 0.5 0.0 Y 0.0 0.5 0.0
 Y 0.0 0.5 0.0 G 0.0 0.0 0.0
-G 0.0 0.0 0.0 M 0.5 0.5 0.0
 end kpoint_path
 
 bands_num_points 101
